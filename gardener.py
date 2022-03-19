@@ -30,19 +30,20 @@ def main():
     client = AnimalFarmClient(
         PRIVATE_KEY, txn_timeout=TXN_TIMEOUT, gas_price=GAS_PRICE_IN_WEI, rpc_host=RPC_HOST)
 
+    first_run = True
 
     while True:
         # handle the garden actions.
-        handle_garden(client)
-        
+        secondsUntilNextPlant = handle_garden(client,first_run)
+
         # take care of all the pools user is in! check settings.py
-        handle_pools(client)
+        #handle_pools(client)
         
         logging.info('----------------')
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
-        logging.info('%s' % random.choice(FARMING_PHRASES))
-        time.sleep(MINUTES_BETWEEN_UPDATES * 60)
+        logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
+        time.sleep(secondsUntilNextPlant+1)
         
 def get_garden_data(garden, max_tries=1):
     for _ in range(max_tries):
@@ -50,6 +51,9 @@ def get_garden_data(garden, max_tries=1):
             seed_count = garden.get_user_seeds(garden.address)
             plant_count = garden.get_my_plants()
             seeds_per_plant = garden.get_seeds_per_plant()
+            seedsPerDay=plant_count*86400
+            seedsPerSecond=seedsPerDay/24/60/60
+            secondsUntilNextPlant=round((seeds_per_plant-(seed_count%seeds_per_plant))/seedsPerSecond)
             if seed_count >= seeds_per_plant:
                 new_plants = seed_count // seeds_per_plant
             else:
@@ -61,6 +65,7 @@ def get_garden_data(garden, max_tries=1):
                 continue
             unclaimed_worth = drip_busd_lp["price"] * unclaimed_lp
             return {
+                'secondsUntilNextPlant' : secondsUntilNextPlant,
                 'seeds': seed_count,
                 'plants': plant_count,
                 'seeds_per_plant': seeds_per_plant,
@@ -100,7 +105,7 @@ def load_stats():
         logging.debug(traceback.format_exc())
     return stats_data
 
-def handle_garden(client):
+def handle_garden(client,first_run):
     global TOTAL_WORTH
     # loading previous session stats, so we know where we left off.
     action_index, claimed_counter, compound_counter = load_stats()
@@ -117,6 +122,7 @@ def handle_garden(client):
     plant_count = garden_data.get('plants', 0)
     seeds_per_plant = garden_data.get('seeds_per_plant', 0)
     new_plants = garden_data.get('new_plants', 0)
+    secondsUntilNextPlant = garden_data.get('secondsUntilNextPlant',180)
     if seed_count >= seeds_per_plant:
         new_plants = seed_count // seeds_per_plant
     else:
@@ -124,8 +130,9 @@ def handle_garden(client):
     unclaimed_lp = garden_data.get('unclaimed_lp', 0)
     unclaimed_worth = garden_data.get('unclaimed_worth', 0)
     TOTAL_WORTH = decimal_round(unclaimed_worth, 2)
-    # Report garden stats.
+    # Report garden stats
     logging.info('----------------')
+    logging.info('Seconds to next plant: %s.' % (secondsUntilNextPlant))
     logging.info('Seeds: %s. Plants: %s.' % (seed_count, plant_count))
     logging.info('New Plants: %s/%s.' % (new_plants, MINIMUM_NEW_PLANTS))
     logging.info('Pending: %s. Value: $%s.' % (unclaimed_lp, decimal_round(unclaimed_worth, 2)))
@@ -139,7 +146,7 @@ def handle_garden(client):
     # Save stats before current action changes!
     save_stats(action_index, claimed_counter, compound_counter)
     # Do actions in the garden.
-    if new_plants >= MINIMUM_NEW_PLANTS:
+    if new_plants >= MINIMUM_NEW_PLANTS and not first_run:
         if ACTION_LIST[action_index] == "compound":
             action_index += 1
             logging.info('Planting seeds (compounding)...')
@@ -169,6 +176,7 @@ def handle_garden(client):
         logging.debug('response: %s' % response)
     # Save stats 1 more time to make sure we are up to date!
     save_stats(action_index, claimed_counter, compound_counter)
+    return secondsUntilNextPlant
 
 def handle_pools(client):
     global POOL_DICT, TOTAL_WORTH
