@@ -36,6 +36,7 @@ def main():
         # handle the garden actions.
         secondsUntilNextPlant = handle_garden(client,first_run)
 
+        first_run = False
         # take care of all the pools user is in! check settings.py
         #handle_pools(client)
         
