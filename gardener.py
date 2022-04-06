@@ -54,7 +54,7 @@ def main():
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
-        time.sleep(secondsUntilNextPlant+1)pyth
+        time.sleep(secondsUntilNextPlant+1)
         
 def get_garden_data(garden, max_tries=1):
     for _ in range(max_tries):

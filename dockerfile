@@ -12,4 +12,4 @@ COPY . .
 CMD [ "python", "gardener.py" ]
 
 # docker build -t dripgarden:latest .
-# docker run --name dripgarden -d dripgarden:latest
+# docker run --restart=unless-stopped -e MINIMUM_NEW_PLANTS=7 --name dripgarden -d dripgarden:latest
