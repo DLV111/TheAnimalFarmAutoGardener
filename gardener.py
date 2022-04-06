@@ -22,7 +22,7 @@ for var in MANDATORY_ENV_VARS:
     if var not in os.environ:
         raise EnvironmentError("Failed because {} is not set.".format(var))
 
-MINIMUM_NEW_PLANTS = os.environ['MINIMUM_NEW_PLANTS']
+MINIMUM_NEW_PLANTS = int(os.environ['MINIMUM_NEW_PLANTS'])
 print("Min new plants: %s" % MINIMUM_NEW_PLANTS)
 
 
