@@ -16,6 +16,9 @@ POOL_DICT = {}
 
 TOTAL_WORTH = Decimal(0.0)
 
+MINIMUM_NEW_PLANTS = os.environ['MINIMUM_NEW_PLANTS']
+print("Min new plants: %s" % MINIMUM_NEW_PLANTS)
+
 def main():
     global POOL_DICT
     os.system("clear")
@@ -44,7 +47,7 @@ def main():
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
-        time.sleep(secondsUntilNextPlant+1)
+        time.sleep(secondsUntilNextPlant+1)pyth
         
 def get_garden_data(garden, max_tries=1):
     for _ in range(max_tries):
