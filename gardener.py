@@ -16,8 +16,15 @@ POOL_DICT = {}
 
 TOTAL_WORTH = Decimal(0.0)
 
+MANDATORY_ENV_VARS = ["MINIMUM_NEW_PLANTS"]
+
+for var in MANDATORY_ENV_VARS:
+    if var not in os.environ:
+        raise EnvironmentError("Failed because {} is not set.".format(var))
+
 MINIMUM_NEW_PLANTS = os.environ['MINIMUM_NEW_PLANTS']
 print("Min new plants: %s" % MINIMUM_NEW_PLANTS)
+
 
 def main():
     global POOL_DICT
