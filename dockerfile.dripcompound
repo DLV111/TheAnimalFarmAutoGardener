@@ -12,4 +12,6 @@ COPY abis/ abis/
 CMD [ "python", "drip_compound.py" ]
 
 # docker build -f dockerfile.dripcompound -t dripcompound:latest .
-# docker run --env-file drip_compound.env --name dripcompound -d dripcompound:latest
+# For each wallet create a new .env file or pass though an env var of -e PRIVATE_KEY='xxxx'
+# Configure in cron for this image to run when you want to compound
+# docker run -v /etc/localtime:/etc/localtime --env-file drip_compound.env --name dripcompound -d dripcompound:latest
