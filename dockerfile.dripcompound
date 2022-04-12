@@ -1,0 +1,14 @@
+FROM python:3
+
+WORKDIR /usr/src/app
+
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY drip_compound.py .
+COPY utils.py .
+
+CMD [ "python", "drip_compound.py" ]
+
+# docker build -t dripcompound:latest .
+# docker run --restart=unless-stopped -e MINIMUM_NEW_PLANTS=7 --name dripcompound -d dripcompound:latest

@@ -76,7 +76,7 @@ FARMING_PHRASES = [
     
 
 class AnimalFarmClient:
-    def __init__(self, private_key, txn_timeout=120, gas_price=30, rpc_host="https://bsc-dataseed.binance.org:443"):
+    def __init__(self, private_key, txn_timeout=120, gas_price=5, rpc_host="https://bsc-dataseed.binance.org:443"):
         self.private_key = private_key
         self.txn_timeout = txn_timeout
         self.gas_price = gas_price
