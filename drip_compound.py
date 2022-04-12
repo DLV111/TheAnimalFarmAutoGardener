@@ -3,7 +3,7 @@ import os
 import logging
 import sys
 import time
-from settings import *
+#from settings import *
 from utils import eth2wei, wei2eth, pancakeswap_api_get_price, read_json_file, to_checksum
 
 

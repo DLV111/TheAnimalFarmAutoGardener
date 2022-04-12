@@ -10,5 +10,5 @@ COPY utils.py .
 
 CMD [ "python", "drip_compound.py" ]
 
-# docker build -t dripcompound:latest .
-# docker run --restart=unless-stopped -e MINIMUM_NEW_PLANTS=7 --name dripcompound -d dripcompound:latest
+# docker build -f dockerfile.dripcompound -t dripcompound:latest .
+# docker run --env-file drip_compound.env --name dripcompound -d dripcompound:latest
