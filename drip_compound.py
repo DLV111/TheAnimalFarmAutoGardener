@@ -88,12 +88,12 @@ class DripCompundClass:
             logging.info("Transaction: %s" % (self.w3.toHex(txn)))
             time.sleep(10)
             self.getDripBalance()
-            logging.info("Updated Drip balance is: %s" % self.DripBalance)
-            self.sendMessage("Drip Compounding Complete","Updated Balance %s - tx %s" % (self.DripBalance,self.w3.toHex(txn)))
+            logging.info("Updated Drip balance is: %s (Increase %s)" % (self.DripBalance,self.getDripBalanceIncrease()))
+            self.sendMessage("Compounding Complete","Updated Balance %s (Increase %s) - tx %s" % (self.DripBalance,self.getDripBalanceIncrease(),self.w3.toHex(txn)))
         else:
             logging.info("Compunding is set to False, only outputting some messages")
             self.getDripBalance()
-            logging.info("Updated Drip balance is: %s" % self.DripBalance)
+            logging.info("Updated Drip balance is: %s (Increase %s)" % (self.DripBalance,self.getDripBalanceIncrease()))
             self.sendMessage("Compounding Complete","Updated Balance %s (Increase %s) - tx %s" % (self.DripBalance,self.getDripBalanceIncrease(),'test:aaaabbbbccccdddd'))
 
 
