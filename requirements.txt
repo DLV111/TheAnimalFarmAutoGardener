@@ -1,2 +1,3 @@
 web3
 python-pushover
+python-dotenv  # This is used mainly for testing or running without docker
