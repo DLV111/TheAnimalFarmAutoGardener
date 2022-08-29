@@ -49,13 +49,16 @@ def main():
         first_run = False
         # take care of all the pools user is in! check settings.py
         #handle_pools(client)
-        
+
         logging.info('----------------')
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
+        if secondsUntilNextPlant < 300:
+            secondsUntilNextPlant = 300
+            logging.info('sleeping for %s as next plant is < 300s', secondsUntilNextPlant )
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
         time.sleep(secondsUntilNextPlant+1)
-        
+
 def get_garden_data(garden, max_tries=1):
     for _ in range(max_tries):
         try:
