@@ -1,0 +1,13 @@
+---
+# docker-compose -f docker-compose-garden.yml -d up
+version: "3.9"
+services:
+  dripgarden:
+    container_name: dripgarden
+    image: dlv111/crypto-web3:latest
+      - /PATH/TO/TheAnimalFarmAutomation/:/usr/src/myapp
+      - /etc/localtime:/etc/localtime
+    command: python gardener.py
+    restart: on-failure
+    environment:
+      - MINIMUM_NEW_PLANTS=2000
