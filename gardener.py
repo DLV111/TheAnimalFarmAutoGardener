@@ -45,7 +45,6 @@ def main():
     while True:
         # handle the garden actions.
         secondsUntilNextPlant = handle_garden(client,first_run)
-
         first_run = False
         # take care of all the pools user is in! check settings.py
         #handle_pools(client)
@@ -53,6 +52,7 @@ def main():
         logging.info('----------------')
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
+        logging.info('%s', NEW_PLANTS)
         if secondsUntilNextPlant < 300:
             secondsUntilNextPlant = 300
             logging.info('sleeping for %s as next plant is < 300s', secondsUntilNextPlant )
@@ -121,6 +121,7 @@ def load_stats():
 
 def handle_garden(client,first_run):
     global TOTAL_WORTH
+    global NEW_PLANTS
     # loading previous session stats, so we know where we left off.
     action_index, claimed_counter, compound_counter = load_stats()
     # Get token price info
@@ -136,6 +137,7 @@ def handle_garden(client,first_run):
     plant_count = garden_data.get('plants', 0)
     seeds_per_plant = garden_data.get('seeds_per_plant', 0)
     new_plants = garden_data.get('new_plants', 0)
+    NEW_PLANTS = new_plants
     secondsUntilNextPlant = garden_data.get('secondsUntilNextPlant',180)
     if seed_count >= seeds_per_plant:
         new_plants = seed_count // seeds_per_plant
