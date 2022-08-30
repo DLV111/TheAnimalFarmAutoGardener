@@ -52,8 +52,7 @@ def main():
         logging.info('----------------')
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
-        logging.info('%s', NEW_PLANTS)
-        if secondsUntilNextPlant < 300:
+        if secondsUntilNextPlant < 300 and NEW_PLANTS < MINIMUM_NEW_PLANTS:
             secondsUntilNextPlant = 300
             logging.info('sleeping for %s as next plant is < 300s', secondsUntilNextPlant )
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
