@@ -55,6 +55,7 @@ def main():
         if secondsUntilNextPlant < 600 and NEW_PLANTS < MINIMUM_NEW_PLANTS:
             secondsUntilNextPlant = 600
             logging.info('sleeping for %s as next plant is < 600s', secondsUntilNextPlant )
+            first_run = True
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
         time.sleep(secondsUntilNextPlant+1)
 
