@@ -52,10 +52,9 @@ def main():
         logging.info('----------------')
         logging.info('Total Value: $%s' % TOTAL_WORTH)
         logging.info('----------------')
-        if secondsUntilNextPlant < 600 and NEW_PLANTS < MINIMUM_NEW_PLANTS:
-            secondsUntilNextPlant = 600
-            logging.info('sleeping for %s as next plant is < 600s', secondsUntilNextPlant )
-            first_run = True
+        if secondsUntilNextPlant < 1200 and NEW_PLANTS < MINIMUM_NEW_PLANTS:
+            secondsUntilNextPlant = 1200
+            logging.info('sleeping for %s as next plant is < 1200s', secondsUntilNextPlant )
         logging.info('%s for %s seconds' % (random.choice(FARMING_PHRASES),secondsUntilNextPlant+1))
         time.sleep(secondsUntilNextPlant+1)
 
@@ -165,7 +164,8 @@ def handle_garden(client,first_run):
     if new_plants >= MINIMUM_NEW_PLANTS and not first_run:
         if ACTION_LIST[action_index] == "compound":
             action_index += 1
-            logging.info('Planting seeds (compounding)...')
+            logging.info('Planting seeds (compounding) in %ss', secondsUntilNextPlant+1)
+            time.sleep(secondsUntilNextPlant+1)
             response = client.plant_seeds(max_tries=MAX_TRIES)
             if response and "status" in response and response["status"] == 1:
                 compound_counter += 1
