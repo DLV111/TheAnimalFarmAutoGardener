@@ -93,6 +93,7 @@ def get_garden_data(garden, max_tries=1):
 
 def get_token_price(token):
     price_dict = pancakeswap_api_get_price(token)
+    print(price_dict)
     token_price = Decimal(price_dict["data"]["price"])
     return token_price
 
@@ -124,9 +125,9 @@ def handle_garden(client,first_run):
     # loading previous session stats, so we know where we left off.
     action_index, claimed_counter, compound_counter = load_stats()
     # Get token price info
-    dogs_price = get_token_price(DOGS_TOKEN_ADDRESS)
-    pigs_price = get_token_price(PIGS_TOKEN_ADDRESS)
-    drip_price = get_token_price(DRIP_TOKEN_ADDRESS)
+    # dogs_price = get_token_price(DOGS_TOKEN_ADDRESS)
+    # pigs_price = get_token_price(PIGS_TOKEN_ADDRESS)
+    # drip_price = get_token_price(DRIP_TOKEN_ADDRESS)
     # Get garden info.
     garden_data = get_garden_data(client, max_tries=MAX_TRIES)
     if len(garden_data) == 0:
@@ -155,8 +156,8 @@ def handle_garden(client,first_run):
         claimed_counter, compound_counter))
     logging.info('Next Action: %s. Position: %s.' % (ACTION_LIST[action_index], (action_index + 1)))
     logging.info('----------------')
-    logging.info('DOGS:$%s PIGS:$%s DRIP:$%s' % (
-        decimal_round(dogs_price, 2), decimal_round(pigs_price, 2), decimal_round(drip_price, 2)))
+    # logging.info('DOGS:$%s PIGS:$%s DRIP:$%s' % (
+    #     decimal_round(dogs_price, 2), decimal_round(pigs_price, 2), decimal_round(drip_price, 2)))
     response = ""
     # Save stats before current action changes!
     save_stats(action_index, claimed_counter, compound_counter)
